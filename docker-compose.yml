@@ -1,0 +1,21 @@
+version: '3.4'
+
+services:
+  sio.documents.api:
+    image: ${DOCKER_REGISTRY-}siodocumentsapi
+    build:
+      context: .
+      dockerfile: src/SIO.Documents.API/Dockerfile
+    depends_on: 
+      - sio.documents.api.sql.projections
+    external_links:
+      - sio.sql.store
+      - sio.rabbitmq
+      - sio.storage
+      - sio.redis
+  sio.documents.api.sql.projections:
+    image: "mcr.microsoft.com/mssql/server:2019-latest"
+networks:    
+  default:
+    external:
+        name: sio.network

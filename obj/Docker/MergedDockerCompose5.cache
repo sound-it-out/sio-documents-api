@@ -1,0 +1,77 @@
+networks:
+  default:
+    external: true
+    name: sio.network
+services:
+  sio.documents.api:
+    build:
+      context: D:\Git\sound-it-out\sio-documents-api
+      dockerfile: src/SIO.Documents.API/Dockerfile
+      labels:
+        com.microsoft.created-by: visual-studio
+        com.microsoft.visual-studio.project-name: SIO.Documents.API
+      target: base
+    container_name: SIO.Documents.API
+    depends_on:
+      sio.documents.api.sql.projections:
+        condition: service_started
+    entrypoint: tail -f /dev/null
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_LOGGING__CONSOLE__DISABLECOLORS: "true"
+      ASPNETCORE_URLS: https://+:443;http://+:80
+      ConnectionStrings__AzureStorage: DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://host.docker.internal:10000/devstoreaccount1;QueueEndpoint=http://host.docker.internal:10001/devstoreaccount1;
+      ConnectionStrings__Projection: Server=sio.api.sql.projections;Initial Catalog=sio-api-projections;User
+        Id=sa;Password=1qaz-pl,
+      ConnectionStrings__RabbitMq: amqp://guest:guest@sio.rabbitmq
+      ConnectionStrings__Redis: sio.redis,abortConnect=true,allowAdmin=true
+      ConnectionStrings__Store: Server=sio.sql.store;Initial Catalog=sio-store;User
+        Id=sa;Password=1qaz-pl,
+      DOTNET_USE_POLLING_FILE_WATCHER: '1'
+      Identity__ApiResource: api
+      Identity__Authority: http://host.docker.internal:5000
+      NUGET_FALLBACK_PACKAGES: /root/.nuget/fallbackpackages
+      RabbitMq__Exchange: sio-docker
+      RabbitMq__ManagementApi__Endpoint: http://localhost:15672
+      RabbitMq__ManagementApi__Password: guest
+      RabbitMq__ManagementApi__User: guest
+      RabbitMq__Subscription: sio-docker-api
+    external_links:
+    - sio.rabbitmq
+    - sio.redis
+    - sio.sql.store
+    - sio.storage
+    image: siodocumentsapi:dev
+    labels:
+      com.microsoft.visualstudio.debuggee.arguments: ' --additionalProbingPath /root/.nuget/packages
+        --additionalProbingPath /root/.nuget/fallbackpackages  ""'
+      com.microsoft.visualstudio.debuggee.killprogram: /bin/sh -c "if PID=$$(pidof
+        dotnet); then kill $$PID; fi"
+      com.microsoft.visualstudio.debuggee.program: dotnet
+      com.microsoft.visualstudio.debuggee.workingdirectory: /app
+    ports:
+    - published: 42213
+      target: 80
+    - published: 44363
+      target: 443
+    tty: true
+    volumes:
+    - D:\Git\sound-it-out\sio-documents-api\src\SIO.Documents.API:/app:rw
+    - C:\Users\matth\vsdbg\vs2017u5:/remote_debugger:rw
+    - C:\Users\matth\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\matth\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+    - C:\Program Files\dotnet\sdk\NuGetFallbackFolder:/root/.nuget/fallbackpackages:ro
+    - C:\Users\matth\.nuget\packages:/root/.nuget/packages:ro
+    - D:\Git\sound-it-out\sio-documents-api:/src:rw
+  sio.documents.api.sql.projections:
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: 1qaz-pl,
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    ports:
+    - published: 1444
+      target: 1433
+    user: root
+    volumes:
+    - /var/opt/mssql/data
+version: '3.4'
