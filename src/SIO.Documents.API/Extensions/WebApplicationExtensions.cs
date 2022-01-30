@@ -9,7 +9,6 @@ namespace SIO.Documents.API.Extensions
             builder.Services
                 .AddAuthentication(builder.Configuration, builder.Environment)
                 .AddInfrastructure(builder.Configuration)
-                .AddOpenApi(builder.Configuration)
                 .AddDomain();
 
             return builder;

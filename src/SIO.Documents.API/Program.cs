@@ -1,4 +1,4 @@
-using SIO.Documents.API.Extensions;
+﻿using SIO.Documents.API.Extensions;
 using SIO.Infrastructure.EntityFrameworkCore.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,7 +17,6 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapEndpoints();
-app.UseOpenApi();
 
 if (app.Environment.IsDevelopment())
     await app.RunProjectionMigrationsAsync();
