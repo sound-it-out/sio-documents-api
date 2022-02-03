@@ -45,7 +45,6 @@ namespace SIO.Migrations.Migrations.SIO.Projection
                         .HasColumnType("int");
 
                     b.Property<string>("TranslationSubject")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TranslationType")

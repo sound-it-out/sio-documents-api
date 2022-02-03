@@ -52,6 +52,7 @@ namespace SIO.Domain.Documents.QueryHandlers
 
             using (var context = _projectionDbContextFactory.Create())
             {
+                var test = context.Set<Document>().ToArray();
                 var document = await context.Set<Document>().FindAsync(new object[] { query.Subject }, cancellationToken);
 
                 if(document is null)

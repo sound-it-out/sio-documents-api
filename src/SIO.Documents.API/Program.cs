@@ -18,6 +18,13 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapEndpoints();
 
+app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true) // allow any origin
+                .AllowCredentials()
+                .WithExposedHeaders("Content-Disposition"));
+
 if (app.Environment.IsDevelopment())
     await app.RunProjectionMigrationsAsync();
 

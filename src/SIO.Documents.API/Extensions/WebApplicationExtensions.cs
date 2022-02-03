@@ -9,7 +9,8 @@ namespace SIO.Documents.API.Extensions
             builder.Services
                 .AddAuthentication(builder.Configuration, builder.Environment)
                 .AddInfrastructure(builder.Configuration)
-                .AddDomain();
+                .AddDomain()
+                .AddCors();
 
             return builder;
         }

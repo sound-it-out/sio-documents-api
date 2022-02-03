@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SIO.Migrations.Migrations.SIO.Projection
 {
-    public partial class InitialCreate : Migration
+    public partial class IntialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,7 +16,7 @@ namespace SIO.Migrations.Migrations.SIO.Projection
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     TranslationType = table.Column<int>(type: "int", nullable: false),
                     TranslationOptionSubject = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TranslationSubject = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TranslationSubject = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CharactersProcessed = table.Column<long>(type: "bigint", nullable: false),
                     TotalCharacters = table.Column<long>(type: "bigint", nullable: false),

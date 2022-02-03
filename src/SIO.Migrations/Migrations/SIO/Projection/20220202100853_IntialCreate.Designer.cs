@@ -12,8 +12,8 @@ using SIO.Infrastructure.EntityFrameworkCore.DbContexts;
 namespace SIO.Migrations.Migrations.SIO.Projection
 {
     [DbContext(typeof(SIOProjectionDbContext))]
-    [Migration("20220130221646_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20220202100853_IntialCreate")]
+    partial class IntialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -47,7 +47,6 @@ namespace SIO.Migrations.Migrations.SIO.Projection
                         .HasColumnType("int");
 
                     b.Property<string>("TranslationSubject")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TranslationType")
